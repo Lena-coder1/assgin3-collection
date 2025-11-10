@@ -1,0 +1,8 @@
+1483,Lena,Garcia,701,Mouse,48.50,6
+2671,John,Lee,612,Printer,120.75,2
+3849,Emma,Patel,934,Laptop,189.20,1
+4372,Olivia,Nguyen,723,Keyboard,59.48,4
+8321,Logan,Hall,901,Camera,442.89,2
+1903,Mason,Walker,654,Router,120.75,7
+5734,Ava,Patel,784,Laptop,899.99,1
+2681,James,Smith,933,Speaker,72.10,5
