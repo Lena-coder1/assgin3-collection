@@ -17,7 +17,7 @@ class Products{
         			while (fileScanner.hasNextLine()) {
         				String line = fileScanner.nextLine();
         				String[] parts = line.split(","); 
-        				int id = Integer.parseInt(parts[0].trim());
+        				int id = Integer.parseInt(parts[3].trim());
         				sales.add(id);
         				}
         		}catch(Exception e) {
