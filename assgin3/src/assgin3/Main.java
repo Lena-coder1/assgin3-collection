@@ -1,104 +1,104 @@
 package assgin3;
-import java.io.File;
+import java.io.*;
 import java.util.*;
-
-class Products{
-    private Map<Integer, Integer> products;
-	public Products() {
-        products = new HashMap<>();
-	}
-        public void run(Scanner input) {
-        	int choice;
-        	File file = new File("Sales.txt");
-        	
-        	Set<Integer> sales = new HashSet<>();
-        	if (file.exists()) {
-        		try(Scanner fileScanner = new Scanner(file)){
-        			while (fileScanner.hasNextLine()) {
-        				String line = fileScanner.nextLine();
-        				String[] parts = line.split(","); 
-        				int id = Integer.parseInt(parts[0].trim());
-        				sales.add(id);
-        				}
-        		}catch(Exception e) {
-        			
-        			System.out.println("error reading sales.txt file,  " + e.getMessage());
-        		}
-        	}
-            do {
-                System.out.println("\n--- Prodcut Management ---");
-                System.out.println("1. update product");
-                System.out.println("2. add new product");
-                System.out.println("3. Exit");
-                System.out.print("Enter your choice: ");
-                choice = input.nextInt();
-                input.nextLine(); 
-
-                switch (choice) {
-                case 1: 
-                	System.out.println(" Please enter product code: ");
-                	int productID= input.nextInt(); 
-                	input.nextLine(); 
-                	if(products.containsKey(productID) || sales.contains(productID)) {
-                		System.out.println("please enter new quantity: ");
-                		int qty = input.nextInt(); 
-                		input.nextLine();
-                		products.put(productID,qty); 
-                		System.out.println("product " + productID + " ,has been update");
-                		            			
-                	}else { 
-                		System.out.println("product ID not found.");
-                		
-                	}
-                	break;
-                	
-                case 2:
-                	System.out.println("Please enter the new product code:");
-                	int newProductID = input.nextInt();
-                	input.nextLine();
-                	if(products.containsKey(newProductID) || sales.contains(newProductID)) {
-                		System.out.println("Product ID already exists "); 
-                		
-                	}else {
-                		
-                		System.out.print("Enter quantity: ");
-                		int qty= input.nextInt(); 
-                		input.nextLine();
-                		
-                		products.put(newProductID, qty); 
-                		System.out.println("new product has been added"); 
-                		
-                		
-                	}break; 
-                	
-                case 3: 
-                	System.out.println("Exiting the product managament"); 
-                	break; 
-                	
-                default: 
-                	System.out.println("Invalid entery"); 
-                	
-                	
-                }
-               
-                   
-            }while(choice !=3);
-            
-
-
-	}
-}
 
 public class Main {
     public static void main(String[] args) {
+    	 Map<Integer, Double> customers = new HashMap<>();
+         Map<Integer, Integer> products = new HashMap<>();
+         
+         String filename = "sales.txt";
+         
+         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+             String line;
+             while ((line = reader.readLine()) != null) {
+                 String[] parts = line.split(",");
+                 int customerID = Integer.parseInt(parts[0]);
+                 double totalBill = Double.parseDouble(parts[5]) * Double.parseDouble(parts[6]);
+                 customers.put(customerID, totalBill);
+                 
+                 
+                 int id = Integer.parseInt(parts[3].trim());
+                 int qty = Integer.parseInt(parts[6].trim());
+                 products.put(id,qty); 
+                
+             }
+         } catch (IOException e) {
+             System.err.println("Error:" + e.getMessage());
+         }
+         
+         System.out.println("---Customer Bills---");
+         for (Map.Entry<Integer, Double> customer : customers.entrySet()) {
+             System.out.println("Total Bill For Customer ID " + customer.getKey() + ": $" + customer.getValue());
+         }
+         
+         // product management section 
+         Scanner input = new Scanner(System.in);
+         int choice;
 
+         do {
+             System.out.println("\n--- Product Management ---");
+             System.out.println("1. Update product quantity");
+             System.out.println("2. Add new product");
+             System.out.println("3. Exit");
+             System.out.print("Enter your choice: ");
+             choice = input.nextInt();
+             input.nextLine();
+
+             switch (choice) {
+                 case 1:
+                     System.out.print("Enter product ID to update: ");
+                     int productID = input.nextInt();
+                     input.nextLine();
+
+                     if (products.containsKey(productID)) {
+                         System.out.print("Enter new quantity: ");
+                         int newQty = input.nextInt();
+                         input.nextLine();
+                         int currentQty = products.get(productID);
+                         newQty = newQty + currentQty; // this should add the qty entered with the value already in the file
+                         products.put(productID, newQty);
+                         
+                         System.out.println("Product " + productID + " has been updated.");
+                     } else {
+                         System.out.println("Product ID not found.");
+                     }
+                     break;
+
+                 case 2:
+                     System.out.print("Enter new product ID: ");
+                     int newProductID = input.nextInt();
+                     input.nextLine();
+
+                     if (products.containsKey(newProductID)) {
+                         System.out.println("Product ID already exists.");
+                     } else {
+                         System.out.print("Enter initial quantity: ");
+                         int qty = input.nextInt();
+                         input.nextLine();
+
+                         products.put(newProductID, qty); 
+                         System.out.println("New product added successfully.");
+                     }
+                     break;
+
+                 case 3:
+                     System.out.println("Exiting the product management...");
+                     break;
+
+                 default:
+                     System.out.println("Invalid entry. Please try again.");
+             }
+
+         } while (choice != 3);
+
+         input.close();
+
+         
+         
 	
-    Scanner input = new Scanner(System.in); 
-    Products products = new Products(); 
-    products.run(input);
+    
+
     }
-
-
-
 
 }
